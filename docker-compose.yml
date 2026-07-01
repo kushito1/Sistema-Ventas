@@ -1,0 +1,30 @@
+services:
+  app:
+    build: . # <--- Le dice a Docker que use el archivo Dockerfile de esta misma carpeta
+    container_name: laravel_backend
+    ports:
+      - "8000:80"
+    volumes:
+      - .:/var/www/html
+    networks:
+      - mired
+
+  db:
+    image: mysql:latest
+    container_name: sistema_inventario
+    ports:
+      - "3306:3306"
+    environment:
+      - MYSQL_ROOT_PASSWORD=${DB_PASSWORD}
+      - MYSQL_DATABASE=${DB_DATABASE}
+    networks:
+      - mired
+    volumes:
+      - mysql_data:/var/lib/mysql
+
+networks:
+  mired:
+    driver: bridge
+
+volumes:
+  mysql_data:
